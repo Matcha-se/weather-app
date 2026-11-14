@@ -1,21 +1,54 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title> Blank </ion-title>
+    <div class="location">
+      <ion-icon aria-hidden="true" name="location-outline"></ion-icon>
+      <span>{{ weather.placeName }}</span>
+    </div>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="refreshWeather()" aria-label="Refresh weather">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- Current weather card -->
+  <div class="current-card app-card">
+    <img class="current-icon" [src]="iconFor(weather.condition)" [alt]="weather.conditionLabel" />
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>
-      Start with Ionic
-      <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a>
-    </p>
+    <p class="temperature">{{ weather.temperature }}°C</p>
+    <p class="condition">{{ weather.conditionLabel }}</p>
+
+    <div class="stats">
+      <div>
+        <span>Humidity</span>
+        <strong>{{ weather.humidity }}%</strong>
+      </div>
+      <div>
+        <span>Wind</span>
+        <strong>{{ weather.windSpeed }} km/h</strong>
+      </div>
+      <div>
+        <span>Feels like</span>
+        <strong>{{ weather.feelsLike }}°C</strong>
+      </div>
+    </div>
   </div>
+
+  <!-- 5-day forecast -->
+  <h2 class="section-title">5-Day Forecast</h2>
+
+  <div class="forecast-card app-card">
+    @for (day of forecast; track day.day) {
+    <div class="forecast-row">
+      <span class="day">{{ day.day }}</span>
+      <img class="forecast-icon" [src]="iconFor(day.condition)" [alt]="day.condition" />
+      <span class="temps"><strong>{{ day.high }}°</strong> / {{ day.low }}°</span>
+    </div>
+    }
+  </div>
+
+  <p class="updated">Updated at {{ updatedLabel }}</p>
 </ion-content>

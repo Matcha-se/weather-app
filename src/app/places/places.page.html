@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Places</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/add-place" aria-label="Add place">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <p class="intro">Use the pencil to edit a place, or the + button to add a new one.</p>
+
+  <div class="places-card app-card">
+    @for (place of places(); track place.id) {
+    <div class="place-row">
+      <div class="place-info">
+        <strong>{{ place.name }}</strong>
+        <span>{{ place.latitude }}, {{ place.longitude }}</span>
+      </div>
+
+      <ion-button fill="clear" [routerLink]="['/add-place', place.id]" aria-label="Edit place">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" color="danger" (click)="deletePlace(place)" aria-label="Delete place">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </div>
+    } @empty {
+    <p class="empty">No places yet. Tap + to add your first place.</p>
+    }
+  </div>
+</ion-content>

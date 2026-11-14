@@ -1,2 +1,56 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// -----------------------------------------------------------------------------
+// App theme
+// -----------------------------------------------------------------------------
+// This app is LIGHT MODE ONLY.
+// There is no dark palette import in global.scss, so Ionic never switches theme.
+// All colors live here so every page uses the same values.
+// -----------------------------------------------------------------------------
+
+:root {
+  // Tell the browser to render form controls, scrollbars and so on in light mode.
+  color-scheme: light;
+
+  // ---- Brand color (the only accent) ---------------------------------------
+  // Sky blue. "shade" is a little darker (pressed state) and
+  // "tint" is a little lighter (hover / highlight state).
+  --ion-color-primary: #3b82f6;
+  --ion-color-primary-rgb: 59, 130, 246;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3472d8;
+  --ion-color-primary-tint: #4f8ff7;
+
+  // ---- Secondary color (gray, used for quieter text and icons) -------------
+  --ion-color-secondary: #6b7280;
+  --ion-color-secondary-rgb: 107, 114, 128;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #5e6471;
+  --ion-color-secondary-tint: #7a808d;
+
+  // ---- Base background and text -------------------------------------------
+  --ion-background-color: #f7f9fc;
+  --ion-background-color-rgb: 247, 249, 252;
+  --ion-text-color: #1f2937;
+  --ion-text-color-rgb: 31, 41, 55;
+
+  // ---- Font ----------------------------------------------------------------
+  // Roboto is loaded from Google Fonts in src/index.html.
+  // If it fails to load, the system font is used instead.
+  --ion-font-family: 'Roboto', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+
+  // ---- App tokens used by our own pages -----------------------------------
+  // Use these instead of writing color values inside components.
+  --app-bg: #f7f9fc; // page background
+  --app-card: #ffffff; // cards, list groups, tab bar
+  --app-accent: #3b82f6; // links, active tab, primary button
+  --app-text: #1f2937; // main text
+  --app-muted: #6b7280; // secondary text (labels, hints, day names)
+  --app-border: #e8edf5; // 1px hairline dividers
+
+  --app-radius: 16px; // cards
+  --app-radius-sm: 12px; // buttons and small chips
+
+  // Very light shadow: flat look, just enough to lift the card off the page.
+  --app-shadow: 0 1px 2px rgba(31, 41, 55, 0.04), 0 6px 16px rgba(31, 41, 55, 0.05);
+}

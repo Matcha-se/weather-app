@@ -1,0 +1,63 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/places"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ isEditing ? 'Edit Place' : 'Add Place' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="savePlace()">
+    <div class="form-card app-card">
+      <ion-list lines="none">
+        <ion-item>
+          <ion-input
+            label="Place name"
+            label-placement="stacked"
+            name="name"
+            [(ngModel)]="name"
+            type="text"
+            placeholder="Gapan, Nueva Ecija"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Latitude"
+            label-placement="stacked"
+            name="latitude"
+            [(ngModel)]="latitude"
+            type="number"
+            inputmode="decimal"
+            placeholder="15.3078"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Longitude"
+            label-placement="stacked"
+            name="longitude"
+            [(ngModel)]="longitude"
+            type="number"
+            inputmode="decimal"
+            placeholder="120.9464"
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+    }
+
+    <ion-button expand="block" type="button" class="save-button" (click)="savePlace()">
+      <ion-icon slot="start" name="save-outline"></ion-icon>
+      {{ isEditing ? 'Save changes' : 'Add place' }}
+    </ion-button>
+  </form>
+
+  <p class="hint">The Map tab uses these coordinates to show the place.</p>
+</ion-content>

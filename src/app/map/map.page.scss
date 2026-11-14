@@ -1,0 +1,35 @@
+ion-toolbar {
+  --background: var(--app-bg);
+  --border-width: 0;
+  --min-height: 56px;
+}
+
+ion-title {
+  padding-inline-start: 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+ion-content {
+  --background: var(--app-bg);
+}
+
+.map-card {
+  margin: 8px 16px 0;
+  padding: 8px;
+}
+
+#weather-map {
+  z-index: 0;
+  width: 100%;
+  height: calc(100vh - 220px);
+  min-height: 320px;
+  border-radius: 10px;
+}
+
+.hint {
+  margin: 10px 20px 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  text-align: center;
+}

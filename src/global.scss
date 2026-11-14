@@ -1,37 +1,134 @@
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Styles that apply to the whole app (not just one page).
+ * Docs: https://ionicframework.com/docs/layout/global-stylesheets
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
+/*
+ * LIGHT MODE ONLY
+ * ----------------------------------------------------------------------------
+ * There is deliberately NO dark palette import here.
+ * (The starter had "@import '@ionic/angular/css/palettes/dark.system.css';")
+ * Because that import is gone, Ionic keeps the light colors from
+ * src/theme/variables.scss even when the phone is set to dark mode.
  */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+html {
+  /* Also tells the browser to draw scrollbars and form controls in light mode. */
+  color-scheme: light;
+  background: var(--app-bg);
+}
+
+body {
+  margin: 0;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: var(--ion-font-family);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ionic wraps the app in <ion-app>, so color that too. */
+ion-app {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+/* Every page scrolls on the soft white background. */
+ion-content {
+  --background: var(--app-bg);
+  --color: var(--app-text);
+}
+
+/* Headers/toolbars sit on the page background, with no border line. */
+ion-toolbar {
+  --background: var(--app-bg);
+  --color: var(--app-text);
+  --border-width: 0;
+}
+
+/* -----------------------------------------------------------------------------
+ * Reusable pieces from the style guide
+ * -------------------------------------------------------------------------- */
+
+/* White card: 16px radius, very light shadow, no border, no gradient. */
+.app-card {
+  background: var(--app-card);
+  border-radius: var(--app-radius);
+  box-shadow: var(--app-shadow);
+}
+
+/* Small round-ish button used for primary actions. */
+.app-button {
+  --background: var(--app-accent);
+  --background-activated: var(--ion-color-primary-shade);
+  --background-hover: var(--ion-color-primary-tint);
+  --color: #ffffff;
+  --border-radius: var(--app-radius-sm);
+  height: 48px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Outlined version of the same button. */
+.app-button-outline {
+  --background: var(--app-card);
+  --background-activated: #eef4ff;
+  --color: var(--app-accent);
+  --border-color: var(--app-accent);
+  --border-width: 1px;
+  --border-style: solid;
+  --border-radius: var(--app-radius-sm);
+  height: 48px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Muted helper text, e.g. "Updated at 9:30 AM". */
+.app-muted {
+  color: var(--app-muted);
+}
+
+/* Thin divider line used between list rows. */
+.app-divider {
+  border-top: 1px solid var(--app-border);
+}
+
+/* Heading above a group of cards. */
+.app-section-title {
+  margin: 20px 4px 8px;
+  color: var(--app-text);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/*
+ * Safety net: keep the light tokens even if the operating system is in dark mode.
+ * (Nothing here changes when the system theme is light.)
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #f7f9fc;
+    --ion-background-color-rgb: 247, 249, 252;
+    --ion-text-color: #1f2937;
+    --ion-text-color-rgb: 31, 41, 55;
+  }
+}

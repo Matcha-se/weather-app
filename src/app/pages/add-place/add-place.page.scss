@@ -1,0 +1,62 @@
+ion-toolbar {
+  --background: var(--app-bg);
+  --border-width: 0;
+  --min-height: 56px;
+}
+
+ion-back-button {
+  --color: var(--app-accent);
+}
+
+ion-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+ion-content {
+  --background: var(--app-bg);
+}
+
+.form-card {
+  overflow: hidden;
+}
+
+ion-list {
+  --background: var(--app-card);
+  padding: 4px 0;
+}
+
+ion-item {
+  --background: var(--app-card);
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+}
+
+ion-input {
+  --color: var(--app-text);
+  --placeholder-color: var(--app-muted);
+  font-size: 14px;
+}
+
+.save-button {
+  --background: var(--app-accent);
+  --background-activated: #2f6fdc;
+  --border-radius: 12px;
+  height: 48px;
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.error {
+  margin: 12px 4px 0;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.hint {
+  margin: 14px 4px 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  text-align: center;
+}

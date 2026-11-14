@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weather App — UI Style Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+      /* ---- Design tokens ------------------------------------------------ */
+      :root {
+        --bg: #f7f9fc; /* soft white */
+        --card: #ffffff; /* card surface */
+        --accent: #3b82f6; /* sky blue, the only accent */
+        --text: #1f2937; /* dark slate */
+        --muted: #6b7280; /* secondary text */
+        --border: #e8edf5; /* hairline */
+        --sun: #fbbf24; /* sun icons only */
+
+        --radius: 16px;
+        --radius-btn: 12px;
+        --shadow: 0 1px 2px rgba(31, 41, 55, 0.04), 0 6px 16px rgba(31, 41, 55, 0.05);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Roboto', 'Helvetica Neue', 'Segoe UI', system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* All icons are normal image files. Swap them with your own art. */
+      .icon {
+        display: block;
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+
+      /* ---- Page shell --------------------------------------------------- */
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 44px 24px 72px;
+      }
+
+      .guide-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 6px 0 8px;
+        font-size: 32px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      .sub {
+        margin: 0;
+        max-width: 540px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .pill {
+        padding: 6px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--card);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 40px;
+        align-items: start;
+        margin-top: 36px;
+      }
+
+      .phone-wrap {
+        position: sticky;
+        top: 32px;
+      }
+
+      .phone-caption {
+        margin: 14px 4px 0;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .specs {
+        min-width: 0;
+      }
+
+      .section {
+        margin-bottom: 20px;
+        padding: 22px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+
+      .section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .section h2 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .index {
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .note {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .note code {
+        font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+        font-size: 11px;
+      }
+
+      /* ---- 01 Colors ---------------------------------------------------- */
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+        gap: 12px;
+      }
+
+      .swatch .chip {
+        display: block;
+        height: 52px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+
+      .swatch b {
+        display: block;
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .swatch code {
+        display: block;
+        color: var(--muted);
+        font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+        font-size: 11px;
+      }
+
+      .swatch small {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      /* ---- 02 Typography ------------------------------------------------ */
+      .type-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .type-row:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .type-row:first-child {
+        padding-top: 0;
+      }
+
+      .type-meta {
+        color: var(--muted);
+        font-size: 11px;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .t-display {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+      }
+
+      .t-title {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .t-body {
+        font-size: 15px;
+      }
+
+      .t-caption {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      /* ---- 03 Icons ----------------------------------------------------- */
+      .icon-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .icon-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 8px;
+        border-radius: 12px;
+        background: var(--bg);
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .icon-tile .icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      /* ---- 04 Buttons --------------------------------------------------- */
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .btn {
+        height: 48px;
+        padding: 0 20px;
+        border: 1px solid var(--accent);
+        border-radius: var(--radius-btn);
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .btn-primary:active {
+        background: #2f6fdc;
+      }
+
+      .btn-secondary {
+        background: var(--card);
+        color: var(--accent);
+      }
+
+      .btn-secondary:active {
+        background: #eef4ff;
+      }
+
+      /* ---- 05 Card ------------------------------------------------------ */
+      .stage {
+        padding: 16px;
+        border-radius: 12px;
+        background: var(--bg);
+      }
+
+      .sample-card {
+        padding: 16px;
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+
+      .sample-card-main {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .sample-card-main .icon {
+        width: 36px;
+        height: 36px;
+        flex: none;
+      }
+
+      .sample-card-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .sample-card-text b {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .sample-card-text span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .sample-temp {
+        margin-left: auto;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.1;
+        text-align: right;
+      }
+
+      .sample-temp span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .sample-stats {
+        display: flex;
+        gap: 16px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      /* ---- 06 List ------------------------------------------------------ */
+      .demo-list {
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+
+      .demo-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+      }
+
+      .demo-row + .demo-row {
+        border-top: 1px solid var(--border);
+      }
+
+      .demo-row .icon {
+        width: 26px;
+        height: 26px;
+        flex: none;
+      }
+
+      .row-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .row-text b {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .row-text span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .row-temp {
+        margin-left: auto;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      /* ---- 07 Tab bar --------------------------------------------------- */
+      .tabbar {
+        display: flex;
+        padding: 8px 0 10px;
+        border-top: 1px solid var(--border);
+        background: var(--card);
+      }
+
+      .tab {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .tab img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+      }
+
+      /* Inactive tabs use the same blue image, shown in gray. */
+      .tab:not(.active) img {
+        filter: grayscale(1);
+        opacity: 0.65;
+      }
+
+      .tab.active {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .tabbar-demo {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      /* ---- Phone preview ------------------------------------------------ */
+      .phone {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        width: 100%;
+        max-width: 360px;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: var(--bg);
+        box-shadow: 0 8px 30px rgba(31, 41, 55, 0.07);
+      }
+
+      .statusbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .status-icons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .status-icons .icon {
+        width: 15px;
+        height: 15px;
+      }
+
+      .app {
+        padding: 4px 16px 14px;
+      }
+
+      .app-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 4px 2px 14px;
+      }
+
+      .location-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .location-row .icon {
+        width: 18px;
+        height: 18px;
+        flex: none;
+      }
+
+      .city {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .refresh {
+        width: 20px;
+        height: 20px;
+        flex: none;
+        object-fit: contain;
+      }
+
+      .weather-card {
+        padding: 18px;
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+
+      .current-icon {
+        display: block;
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 6px;
+        object-fit: contain;
+      }
+
+      .big-temp {
+        font-size: 44px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .condition {
+        margin: 4px 0 14px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .weather-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+      }
+
+      .weather-stats div + div {
+        border-left: 1px solid var(--border);
+      }
+
+      .weather-stats span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .weather-stats b {
+        display: block;
+        margin-top: 2px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .forecast-title {
+        margin: 18px 4px 8px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .phone-forecast {
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+
+      .phone-row {
+        display: flex;
+        align-items: center;
+        padding: 10px 14px;
+      }
+
+      .phone-row + .phone-row {
+        border-top: 1px solid var(--border);
+      }
+
+      .phone-row .day {
+        width: 40px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .phone-row .icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .phone-row .temps {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .phone-row .temps strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .phone .tabbar {
+        margin-top: auto;
+      }
+
+      .phone .tab {
+        font-size: 10px;
+      }
+
+      /* ---- Footer ------------------------------------------------------- */
+      .guide-foot {
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .guide-foot strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        .phone-wrap {
+          position: static;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="guide-head">
+        <div>
+          <p class="eyebrow">Student project &middot; Ionic</p>
+          <h1>Weather App — UI Style Guide</h1>
+          <p class="sub">
+            A light, tidy Android-style weather app UI. Soft white surfaces, one sky-blue accent, flat weather icons,
+            and simple 16px cards.
+          </p>
+        </div>
+        <div class="pills">
+          <span class="pill">Light theme only</span>
+          <span class="pill">Radius 16px</span>
+          <span class="pill">Roboto</span>
+          <span class="pill">#3B82F6 accent</span>
+        </div>
+      </header>
+
+      <div class="layout">
+        <!-- Phone preview -->
+        <div class="phone-wrap">
+          <div class="phone">
+            <div class="statusbar">
+              <span>9:41</span>
+              <span class="status-icons">
+                <img class="icon" src="icons/status/signal.svg" alt="" />
+                <img class="icon" src="icons/status/wifi.svg" alt="" />
+                <img class="icon" src="icons/status/battery.svg" alt="" />
+              </span>
+            </div>
+
+            <div class="app">
+              <div class="app-head">
+                <div class="location-row">
+                  <img class="icon" src="icons/ui/location.svg" alt="" />
+                  <h3 class="city">Gapan, Nueva Ecija</h3>
+                </div>
+                <img class="refresh" src="icons/ui/refresh.svg" alt="Refresh weather" />
+              </div>
+
+              <div class="weather-card">
+                <img class="current-icon" src="icons/weather/partly-cloudy.svg" alt="Partly cloudy" />
+                <div class="big-temp">31°C</div>
+                <p class="condition">Partly Cloudy</p>
+                <div class="weather-stats">
+                  <div><span>Humidity</span><b>68%</b></div>
+                  <div><span>Wind</span><b>12 km/h</b></div>
+                  <div><span>Feels like</span><b>34°C</b></div>
+                </div>
+              </div>
+
+              <h4 class="forecast-title">5-Day Forecast</h4>
+
+              <div class="phone-forecast">
+                <div class="phone-row">
+                  <span class="day">Mon</span>
+                  <img class="icon" src="icons/weather/partly-cloudy.svg" alt="" />
+                  <span class="temps"><strong>32°</strong> / 24°</span>
+                </div>
+                <div class="phone-row">
+                  <span class="day">Tue</span>
+                  <img class="icon" src="icons/weather/sun.svg" alt="" />
+                  <span class="temps"><strong>33°</strong> / 25°</span>
+                </div>
+                <div class="phone-row">
+                  <span class="day">Wed</span>
+                  <img class="icon" src="icons/weather/rain.svg" alt="" />
+                  <span class="temps"><strong>29°</strong> / 23°</span>
+                </div>
+                <div class="phone-row">
+                  <span class="day">Thu</span>
+                  <img class="icon" src="icons/weather/cloud.svg" alt="" />
+                  <span class="temps"><strong>30°</strong> / 23°</span>
+                </div>
+                <div class="phone-row">
+                  <span class="day">Fri</span>
+                  <img class="icon" src="icons/weather/sun.svg" alt="" />
+                  <span class="temps"><strong>33°</strong> / 25°</span>
+                </div>
+              </div>
+            </div>
+
+            <nav class="tabbar">
+              <div class="tab active">
+                <img src="icons/tabs/home.svg" alt="" />
+                <span>Home</span>
+              </div>
+              <div class="tab">
+                <img src="icons/tabs/map.svg" alt="" />
+                <span>Map</span>
+              </div>
+              <div class="tab">
+                <img src="icons/tabs/places.svg" alt="" />
+                <span>Places</span>
+              </div>
+            </nav>
+          </div>
+          <p class="phone-caption">Home screen — same layout as the app's Home tab.</p>
+        </div>
+
+        <!-- Spec panels -->
+        <div class="specs">
+          <section class="section">
+            <div class="section-head">
+              <h2>Color palette</h2>
+              <span class="index">01</span>
+            </div>
+            <div class="swatches">
+              <div class="swatch">
+                <span class="chip" style="background: #f7f9fc"></span>
+                <b>Soft White</b>
+                <code>#F7F9FC</code>
+                <small>Background</small>
+              </div>
+              <div class="swatch">
+                <span class="chip" style="background: #ffffff"></span>
+                <b>White</b>
+                <code>#FFFFFF</code>
+                <small>Cards</small>
+              </div>
+              <div class="swatch">
+                <span class="chip" style="background: #3b82f6"></span>
+                <b>Sky Blue</b>
+                <code>#3B82F6</code>
+                <small>Only accent</small>
+              </div>
+              <div class="swatch">
+                <span class="chip" style="background: #1f2937"></span>
+                <b>Dark Slate</b>
+                <code>#1F2937</code>
+                <small>Primary text</small>
+              </div>
+              <div class="swatch">
+                <span class="chip" style="background: #6b7280"></span>
+                <b>Gray</b>
+                <code>#6B7280</code>
+                <small>Secondary text</small>
+              </div>
+              <div class="swatch">
+                <span class="chip" style="background: #fbbf24"></span>
+                <b>Sun Yellow</b>
+                <code>#FBBF24</code>
+                <small>Sun icon only</small>
+              </div>
+            </div>
+            <p class="note">Hairlines use #E8EDF5. No gradients, no extra accent colors.</p>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2>Typography</h2>
+              <span class="index">02</span>
+            </div>
+            <div class="type-row">
+              <span class="t-display">Good morning</span>
+              <span class="type-meta">Display &middot; 28/700</span>
+            </div>
+            <div class="type-row">
+              <span class="t-title">Gapan, Nueva Ecija</span>
+              <span class="type-meta">Title &middot; 20/700</span>
+            </div>
+            <div class="type-row">
+              <span class="t-body">Partly cloudy with a light breeze.</span>
+              <span class="type-meta">Body &middot; 15/400</span>
+            </div>
+            <div class="type-row">
+              <span class="t-caption">Feels like 34°C &middot; Updated 9:30 AM</span>
+              <span class="type-meta">Caption &middot; 13/500</span>
+            </div>
+            <p class="note">Roboto, with the system font as fallback. Four sizes are enough.</p>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2>Weather icons</h2>
+              <span class="index">03</span>
+            </div>
+            <div class="icon-row">
+              <div class="icon-tile">
+                <img class="icon" src="icons/weather/sun.svg" alt="" />
+                <span>Sun</span>
+              </div>
+              <div class="icon-tile">
+                <img class="icon" src="icons/weather/cloud.svg" alt="" />
+                <span>Cloud</span>
+              </div>
+              <div class="icon-tile">
+                <img class="icon" src="icons/weather/rain.svg" alt="" />
+                <span>Rain</span>
+              </div>
+              <div class="icon-tile">
+                <img class="icon" src="icons/weather/partly-cloudy.svg" alt="" />
+                <span>Partly cloudy</span>
+              </div>
+            </div>
+            <p class="note">
+              These are normal image files in <code>src/assets/icons/weather/</code>. Replace a file with your own
+              picture and the app will use it.
+            </p>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2>Button</h2>
+              <span class="index">04</span>
+            </div>
+            <div class="button-row">
+              <button class="btn btn-primary" type="button">Check forecast</button>
+              <button class="btn btn-secondary" type="button">Add place</button>
+            </div>
+            <p class="note">
+              Primary fills sky blue; secondary is white with a 1px blue border. Height 48px, radius 12px, sentence
+              case.
+            </p>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2>Card</h2>
+              <span class="index">05</span>
+            </div>
+            <div class="stage">
+              <div class="sample-card">
+                <div class="sample-card-main">
+                  <img class="icon" src="icons/weather/cloud.svg" alt="" />
+                  <div class="sample-card-text">
+                    <b>Tomorrow</b>
+                    <span>Partly cloudy</span>
+                  </div>
+                  <div class="sample-temp">32°<span>24°</span></div>
+                </div>
+                <div class="sample-stats">
+                  <span>Wind 12 km/h</span>
+                  <span>Humidity 68%</span>
+                </div>
+              </div>
+            </div>
+            <p class="note">White surface, 16px radius, ultra-light shadow, 16px padding.</p>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2>List item</h2>
+              <span class="index">06</span>
+            </div>
+            <div class="stage">
+              <div class="demo-list">
+                <div class="demo-row">
+                  <img class="icon" src="icons/weather/rain.svg" alt="" />
+                  <div class="row-text">
+                    <b>Gapan, Nueva Ecija</b>
+                    <span>Rain &middot; 26°</span>
+                  </div>
+                  <span class="row-temp">26°</span>
+                </div>
+                <div class="demo-row">
+                  <img class="icon" src="icons/weather/sun.svg" alt="" />
+                  <div class="row-text">
+                    <b>San Diego, CA</b>
+                    <span>Sunny &middot; 28°</span>
+                  </div>
+                  <span class="row-temp">28°</span>
+                </div>
+              </div>
+            </div>
+            <p class="note">Grouped in a card. 56px rows with a 1px hairline divider.</p>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <h2>Bottom tab bar</h2>
+              <span class="index">07</span>
+            </div>
+            <div class="tabbar tabbar-demo">
+              <div class="tab active">
+                <img src="icons/tabs/home.svg" alt="" />
+                <span>Home</span>
+              </div>
+              <div class="tab">
+                <img src="icons/tabs/map.svg" alt="" />
+                <span>Map</span>
+              </div>
+              <div class="tab">
+                <img src="icons/tabs/places.svg" alt="" />
+                <span>Places</span>
+              </div>
+            </div>
+            <p class="note">
+              Three tabs in Android order: Home, Map, Places. Active tab is sky blue; inactive tabs are gray.
+            </p>
+          </section>
+
+          <p class="guide-foot">
+            <strong>Keep it flat.</strong> No gradients, no 3D, no glow, no dark mode. Shadows stay under 8% opacity,
+            and sky blue is the only accent. Every icon is an image file under <code>src/assets/icons/</code> — replace
+            one with your own PNG or SVG, keeping the same file name, and it shows up here and in the app.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
