@@ -128,3 +128,45 @@ ion-content {
   font-size: 12px;
   text-align: center;
 }
+
+.state-box {
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.state-box p {
+  margin: 12px 0 0;
+  color: var(--app-muted);
+  font-size: 14px;
+}
+
+.state-box .error-text {
+  margin: 0 0 12px;
+  color: var(--app-text);
+}
+
+.state-box ion-button {
+  margin-top: 4px;
+}
+
+.info-message {
+  margin: 0 4px 12px;
+  color: var(--app-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.offline-banner {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--app-radius-sm);
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+}
+
+.offline-banner p {
+  margin: 0;
+  color: #9a3412;
+  font-size: 13px;
+  text-align: center;
+}
