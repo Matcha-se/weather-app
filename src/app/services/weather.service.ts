@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 
 import type { ForecastDay, Weather, WeatherCondition } from '../models/weather.model';
 import { StorageService } from './storage.service';
@@ -50,7 +50,8 @@ export class WeatherService {
       '&daily=weather_code,temperature_2m_max,temperature_2m_min' +
       '&timezone=auto';
 
-    const data = await firstValueFrom(this.http.get<OpenMeteoResponse>(url));
+    // Add a timeout so the request does not hang forever.
+    const data = await firstValueFrom(this.http.get<OpenMeteoResponse>(url).pipe(timeout(12000)));
 
     const weather: Weather = {
       placeName,

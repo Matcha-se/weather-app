@@ -65,6 +65,11 @@ export class HomePage implements OnInit {
   }
 
   async loadWeather(isRefresh = false): Promise<void> {
+    // Prevent multiple loads from running at the same time.
+    if (this.isLoading && !isRefresh) {
+      return;
+    }
+
     if (!isRefresh) {
       this.isLoading = true;
     }
