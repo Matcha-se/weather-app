@@ -1,6 +1,10 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Map</ion-title>
+
+    <ion-button slot="end" fill="clear" (click)="locateMe()" aria-label="Locate me">
+      <ion-icon slot="icon-only" name="location-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -9,5 +13,5 @@
     <div id="weather-map"></div>
   </div>
 
-  <p class="hint">Tap a blue dot to see the place name.</p>
+  <p class="hint">Blue marker = my location. Red markers = saved places. Tap a marker for details.</p>
 </ion-content>
