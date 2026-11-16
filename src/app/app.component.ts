@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   addOutline,
+  chevronBackOutline,
   cloudyOutline,
   createOutline,
   locationOutline,
@@ -23,6 +24,7 @@ export class AppComponent {
     // Keeping them in one place is easier for a small project.
     addIcons({
       addOutline,
+      chevronBackOutline,
       cloudyOutline,
       createOutline,
       locationOutline,

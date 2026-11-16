@@ -28,27 +28,28 @@ ion-content {
   overflow: hidden;
 }
 
-.place-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 10px 8px 10px 16px;
+ion-list {
+  background: transparent;
+  padding: 0;
 }
 
-.place-row + .place-row {
-  border-top: 1px solid var(--app-border);
+.place-item {
+  --background: var(--app-card);
+  --padding-start: 16px;
+  --inner-padding-end: 8px;
+  --min-height: 64px;
 }
 
 .place-info {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: 0;
+  gap: 2px;
 }
 
 .place-info strong {
   font-size: 14px;
   font-weight: 600;
+  color: var(--app-text);
 }
 
 .place-info span {

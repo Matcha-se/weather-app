@@ -1,5 +1,11 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" routerLink="/tabs/home" aria-label="Back to home">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
     <ion-title>Places</ion-title>
 
     <ion-buttons slot="end">
@@ -11,26 +17,46 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p class="intro">Use the pencil to edit a place, or the + button to add a new one.</p>
+  <p class="intro">Swipe left to delete, tap the pencil to edit, or tap + to add a new place.</p>
 
+  @if (places().length > 0) {
   <div class="places-card app-card">
-    @for (place of places(); track place.id) {
-    <div class="place-row">
-      <div class="place-info">
-        <strong>{{ place.name }}</strong>
-        <span>{{ place.latitude }}, {{ place.longitude }}</span>
-      </div>
+    <ion-list lines="none">
+      @for (place of places(); track place.id) {
+      <ion-item-sliding #slidingItem>
+        <ion-item class="place-item">
+          <ion-label class="place-info">
+            <strong>{{ place.name }}</strong>
+            <span>{{ place.note || (place.latitude + ', ' + place.longitude) }}</span>
+          </ion-label>
 
-      <ion-button fill="clear" [routerLink]="['/add-place', place.id]" aria-label="Edit place">
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-      </ion-button>
+          <ion-button fill="clear" slot="end" [routerLink]="['/add-place', place.id]" aria-label="Edit place">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
 
-      <ion-button fill="clear" color="danger" (click)="deletePlace(place)" aria-label="Delete place">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-      </ion-button>
-    </div>
-    } @empty {
-    <p class="empty">No places yet. Tap + to add your first place.</p>
-    }
+          <ion-button
+            fill="clear"
+            color="danger"
+            slot="end"
+            (click)="confirmDelete(place)"
+            aria-label="Delete place"
+          >
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="confirmDelete(place, slidingItem)">
+            Delete
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      }
+    </ion-list>
   </div>
+  } @else {
+  <div class="places-card app-card">
+    <p class="empty">No saved places yet</p>
+  </div>
+  }
 </ion-content>
