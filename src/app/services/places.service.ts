@@ -4,7 +4,7 @@ import type { Place } from '../models/place.model';
 
 import { StorageService } from './storage.service';
 
-const STORAGE_KEY = 'weather-app-places';
+const STORAGE_KEY = 'places';
 
 // Keeps the list of saved places and remembers it between app visits.
 @Injectable({
@@ -19,18 +19,39 @@ export class PlacesService {
   readonly places = this.placesSignal.asReadonly();
 
   constructor() {
-    // Load the saved list. On the first run, start with Gapan.
-    const savedPlaces = this.storage.get<Place[]>(STORAGE_KEY);
-    this.placesSignal.set(
-      savedPlaces ?? [
-        {
-          id: 'gapan',
-          name: 'Gapan, Nueva Ecija',
-          latitude: 15.3078,
-          longitude: 120.9464,
-        },
-      ],
-    );
+    // Load saved places when the app starts.
+    void this.loadPlaces();
+  }
+
+  // Load places from Capacitor Preferences.
+  // On the first run, start with 2 sample places.
+  async loadPlaces(): Promise<void> {
+    const savedPlaces = await this.storage.get<Place[]>(STORAGE_KEY);
+
+    if (savedPlaces && savedPlaces.length > 0) {
+      this.placesSignal.set(savedPlaces);
+      return;
+    }
+
+    const samplePlaces: Place[] = [
+      {
+        id: 'gapan',
+        name: 'Gapan, Nueva Ecija',
+        note: 'My hometown',
+        latitude: 15.3071,
+        longitude: 120.9467,
+      },
+      {
+        id: 'cabanatuan',
+        name: 'Cabanatuan City, Nueva Ecija',
+        note: 'Nearby city',
+        latitude: 15.4865,
+        longitude: 120.9734,
+      },
+    ];
+
+    this.placesSignal.set(samplePlaces);
+    await this.storage.set(STORAGE_KEY, samplePlaces);
   }
 
   getPlaces(): Place[] {
@@ -45,21 +66,21 @@ export class PlacesService {
     // Date.now() is good enough for a beginner project.
     const newPlace: Place = { ...place, id: Date.now().toString() };
     this.placesSignal.update((places) => [...places, newPlace]);
-    this.save();
+    void this.save();
     return newPlace;
   }
 
   updatePlace(updatedPlace: Place): void {
     this.placesSignal.update((places) => places.map((place) => (place.id === updatedPlace.id ? updatedPlace : place)));
-    this.save();
+    void this.save();
   }
 
   deletePlace(id: string): void {
     this.placesSignal.update((places) => places.filter((place) => place.id !== id));
-    this.save();
+    void this.save();
   }
 
-  private save(): void {
-    this.storage.set(STORAGE_KEY, this.placesSignal());
+  private async save(): Promise<void> {
+    await this.storage.set(STORAGE_KEY, this.placesSignal());
   }
 }
