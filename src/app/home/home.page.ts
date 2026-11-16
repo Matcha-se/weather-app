@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   ActionSheetController,
   IonButton,
@@ -35,7 +35,7 @@ import { WeatherService } from '../services/weather.service';
     IonSpinner,
   ],
 })
-export class HomePage implements OnInit {
+export class HomePage {
   private readonly weatherService = inject(WeatherService);
   private readonly locationService = inject(LocationService);
   private readonly placesService = inject(PlacesService);
@@ -56,9 +56,22 @@ export class HomePage implements OnInit {
   selectedPlace: Place | null = null;
   selectedLocationLabel = 'My Location';
 
-  async ngOnInit(): Promise<void> {
-    // Load saved places so the picker can show them.
+  // Refresh data automatically when Home is opened or revisited.
+  async ionViewWillEnter(): Promise<void> {
     await this.placesService.loadPlaces();
+
+    // If the selected saved place was deleted, go back to My Location.
+    if (this.selectedPlace) {
+      const updatedPlace = this.placesService.getPlace(this.selectedPlace.id);
+      if (!updatedPlace) {
+        this.selectedPlace = null;
+        this.selectedLocationLabel = 'My Location';
+      } else {
+        this.selectedPlace = updatedPlace;
+        this.selectedLocationLabel = updatedPlace.name;
+      }
+    }
+
     await this.loadWeather();
   }
 
