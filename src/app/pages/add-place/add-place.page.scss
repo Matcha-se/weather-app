@@ -38,20 +38,25 @@ ion-input {
   font-size: 14px;
 }
 
+.location-button {
+  --border-color: var(--app-accent);
+  --color: var(--app-accent);
+  --border-radius: 12px;
+  height: 48px;
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+}
+
 .save-button {
   --background: var(--app-accent);
   --background-activated: #2f6fdc;
   --border-radius: 12px;
   height: 48px;
-  margin-top: 20px;
+  margin-top: 12px;
   font-size: 15px;
   font-weight: 600;
-}
-
-.error {
-  margin: 12px 4px 0;
-  color: #b91c1c;
-  font-size: 13px;
 }
 
 .hint {

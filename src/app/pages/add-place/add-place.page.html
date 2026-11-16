@@ -9,17 +9,26 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form (ngSubmit)="savePlace()">
+  <form [formGroup]="placeForm" (ngSubmit)="savePlace()">
     <div class="form-card app-card">
       <ion-list lines="none">
         <ion-item>
           <ion-input
             label="Place name"
             label-placement="stacked"
-            name="name"
-            [(ngModel)]="name"
             type="text"
+            formControlName="name"
             placeholder="Gapan, Nueva Ecija"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            label="Note"
+            label-placement="stacked"
+            type="text"
+            formControlName="note"
+            placeholder="Optional note"
           ></ion-input>
         </ion-item>
 
@@ -27,11 +36,10 @@
           <ion-input
             label="Latitude"
             label-placement="stacked"
-            name="latitude"
-            [(ngModel)]="latitude"
-            type="number"
-            inputmode="decimal"
-            placeholder="15.3078"
+            type="text"
+            formControlName="latitude"
+            readonly="true"
+            placeholder="Tap the button below"
           ></ion-input>
         </ion-item>
 
@@ -39,25 +47,25 @@
           <ion-input
             label="Longitude"
             label-placement="stacked"
-            name="longitude"
-            [(ngModel)]="longitude"
-            type="number"
-            inputmode="decimal"
-            placeholder="120.9464"
+            type="text"
+            formControlName="longitude"
+            readonly="true"
+            placeholder="Tap the button below"
           ></ion-input>
         </ion-item>
       </ion-list>
     </div>
 
-    @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
-    }
+    <ion-button expand="block" fill="outline" type="button" class="location-button" (click)="useCurrentLocation()">
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      Use my current location
+    </ion-button>
 
-    <ion-button expand="block" type="button" class="save-button" (click)="savePlace()">
+    <ion-button expand="block" type="submit" class="save-button" [disabled]="isSaving">
       <ion-icon slot="start" name="save-outline"></ion-icon>
-      {{ isEditing ? 'Save changes' : 'Add place' }}
+      {{ isSaving ? 'Saving...' : (isEditing ? 'Save changes' : 'Save place') }}
     </ion-button>
   </form>
 
-  <p class="hint">The Map tab uses these coordinates to show the place.</p>
+  <p class="hint">Latitude and longitude are filled from your GPS location.</p>
 </ion-content>
