@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -15,6 +15,7 @@ import {
   IonToolbar,
   ToastController,
 } from '@ionic/angular';
+import * as L from 'leaflet';
 
 import { LocationService } from '../../services/location.service';
 import { PlacesService } from '../../services/places.service';
@@ -39,7 +40,7 @@ import { VibrationService } from '../../services/vibration.service';
     IonIcon,
   ],
 })
-export class AddPlacePage {
+export class AddPlacePage implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
@@ -52,8 +53,11 @@ export class AddPlacePage {
   isEditing = false;
   isSaving = false;
 
+  private map?: L.Map;
+  private selectedMarker?: L.CircleMarker;
+
   // Reactive form for the place details.
-  // Latitude and longitude are filled by the GPS button and kept read-only in the UI.
+  // Latitude and longitude are set by picking on the map or using current location.
   placeForm = this.formBuilder.nonNullable.group({
     name: ['', Validators.required],
     note: [''],
@@ -83,21 +87,43 @@ export class AddPlacePage {
     });
   }
 
+  // Set up the picker map when the page is shown.
+  async ionViewDidEnter(): Promise<void> {
+    const lat = Number(this.placeForm.controls.latitude.value);
+    const lng = Number(this.placeForm.controls.longitude.value);
+    const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && this.placeForm.controls.latitude.value !== '';
+
+    if (hasCoords) {
+      this.setupMap(lat, lng, 14);
+      this.setSelectedMarker(lat, lng);
+      return;
+    }
+
+    // For new places, start around the current/default location.
+    const location = await this.locationService.getCurrentLocation();
+    this.setupMap(location.latitude, location.longitude, 13);
+  }
+
+  ionViewWillLeave(): void {
+    this.removeMap();
+  }
+
+  ngOnDestroy(): void {
+    this.removeMap();
+  }
+
   // Fill latitude and longitude using the device's real GPS location.
   async useCurrentLocation(): Promise<void> {
     await this.vibrationService.lightTap();
 
     try {
       const location = await this.locationService.getCurrentLocation();
-      this.placeForm.patchValue({
-        latitude: location.latitude.toString(),
-        longitude: location.longitude.toString(),
-      });
+      this.updateSelectedLocation(location.latitude, location.longitude, 15);
 
       if (location.usedFallback) {
-        await this.showToast('Could not get GPS. Used Gapan coordinates instead.');
+        await this.showToast('Could not get GPS. Used Gapan location instead.');
       } else {
-        await this.showToast('Current location added.');
+        await this.showToast('Current location selected.');
       }
     } catch {
       await this.vibrationService.error();
@@ -126,7 +152,7 @@ export class AddPlacePage {
 
     if (!latitudeText || !longitudeText || !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       await this.vibrationService.error();
-      await this.showToast('Please use your current location to fill coordinates.');
+      await this.showToast('Please pick a location on the map.');
       return;
     }
 
@@ -158,6 +184,94 @@ export class AddPlacePage {
       await this.showToast('Could not save the place. Please try again.');
     } finally {
       this.isSaving = false;
+    }
+  }
+
+  // Show selected coordinates in a simple format for the user.
+  get selectedLocationLabel(): string {
+    const latitudeText = this.placeForm.controls.latitude.value.trim();
+    const longitudeText = this.placeForm.controls.longitude.value.trim();
+
+    if (!latitudeText || !longitudeText) {
+      return 'No location selected yet. Tap the map or use your current location.';
+    }
+
+    const latitude = Number(latitudeText);
+    const longitude = Number(longitudeText);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      return 'No location selected yet. Tap the map or use your current location.';
+    }
+
+    return `Selected: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+  }
+
+  private setupMap(latitude: number, longitude: number, zoom: number): void {
+    this.removeMap();
+
+    const map = L.map('pick-location-map').setView([latitude, longitude], zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Tap/click on the map to choose a location.
+    map.on('click', (event: L.LeafletMouseEvent) => {
+      this.updateSelectedLocation(event.latlng.lat, event.latlng.lng);
+    });
+
+    this.map = map;
+
+    setTimeout(() => {
+      this.map?.invalidateSize();
+    }, 200);
+  }
+
+  private updateSelectedLocation(latitude: number, longitude: number, zoom?: number): void {
+    this.placeForm.patchValue({
+      latitude: latitude.toString(),
+      longitude: longitude.toString(),
+    });
+
+    this.setSelectedMarker(latitude, longitude);
+
+    if (this.map) {
+      if (zoom) {
+        this.map.setView([latitude, longitude], zoom);
+      }
+      setTimeout(() => {
+        this.map?.invalidateSize();
+      }, 100);
+    }
+  }
+
+  private setSelectedMarker(latitude: number, longitude: number): void {
+    if (!this.map) {
+      return;
+    }
+
+    if (this.selectedMarker) {
+      this.selectedMarker.remove();
+    }
+
+    this.selectedMarker = L.circleMarker([latitude, longitude], {
+      radius: 8,
+      color: '#3b82f6',
+      fillColor: '#3b82f6',
+      fillOpacity: 1,
+      weight: 2,
+    }).addTo(this.map);
+  }
+
+  private removeMap(): void {
+    if (this.selectedMarker) {
+      this.selectedMarker.remove();
+      this.selectedMarker = undefined;
+    }
+
+    if (this.map) {
+      this.map.remove();
+      this.map = undefined;
     }
   }
 

@@ -38,6 +38,32 @@ ion-input {
   font-size: 14px;
 }
 
+.map-picker {
+  margin-top: 16px;
+  padding: 12px;
+}
+
+.picker-title {
+  margin: 0 4px 8px;
+  color: var(--app-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.picker-map {
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.selected-location {
+  margin: 10px 4px 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
 .location-button {
   --border-color: var(--app-accent);
   --color: var(--app-accent);

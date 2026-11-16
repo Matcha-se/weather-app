@@ -31,29 +31,13 @@
             placeholder="Optional note"
           ></ion-input>
         </ion-item>
-
-        <ion-item>
-          <ion-input
-            label="Latitude"
-            label-placement="stacked"
-            type="text"
-            formControlName="latitude"
-            readonly="true"
-            placeholder="Tap the button below"
-          ></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-input
-            label="Longitude"
-            label-placement="stacked"
-            type="text"
-            formControlName="longitude"
-            readonly="true"
-            placeholder="Tap the button below"
-          ></ion-input>
-        </ion-item>
       </ion-list>
+    </div>
+
+    <div class="map-picker app-card">
+      <p class="picker-title">Pick location</p>
+      <div id="pick-location-map" class="picker-map"></div>
+      <p class="selected-location">{{ selectedLocationLabel }}</p>
     </div>
 
     <ion-button expand="block" fill="outline" type="button" class="location-button" (click)="useCurrentLocation()">
@@ -67,5 +51,5 @@
     </ion-button>
   </form>
 
-  <p class="hint">Latitude and longitude are filled from your GPS location.</p>
+  <p class="hint">Tap the map to choose a spot, or use your current location.</p>
 </ion-content>
