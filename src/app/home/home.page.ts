@@ -56,6 +56,9 @@ export class HomePage {
   selectedPlace: Place | null = null;
   selectedLocationLabel = 'My Location';
 
+  // Used to ignore old weather responses when a newer load starts.
+  private loadRequestId = 0;
+
   // Refresh data automatically when Home is opened or revisited.
   async ionViewWillEnter(): Promise<void> {
     await this.placesService.loadPlaces();
@@ -124,10 +127,7 @@ export class HomePage {
   }
 
   async loadWeather(isRefresh = false): Promise<void> {
-    // Prevent multiple loads from running at the same time.
-    if (this.isLoading && !isRefresh) {
-      return;
-    }
+    const requestId = ++this.loadRequestId;
 
     if (!isRefresh) {
       this.isLoading = true;
@@ -162,6 +162,11 @@ export class HomePage {
 
       const result = await this.weatherService.getWeather(latitude, longitude, placeName);
 
+      // If another load started after this one, ignore this old result.
+      if (requestId !== this.loadRequestId) {
+        return;
+      }
+
       this.weather = result.weather;
       this.forecast = result.forecast;
 
@@ -169,10 +174,19 @@ export class HomePage {
       const updatedAt = await this.weatherService.saveCache(this.weather, this.forecast);
       this.setUpdatedLabel(updatedAt);
     } catch {
+      // If another load started after this one, ignore this old error.
+      if (requestId !== this.loadRequestId) {
+        return;
+      }
+
       // If loading fails, try to show the last saved weather.
       await this.vibrationService.error();
 
       const cache = await this.weatherService.loadCache();
+      if (requestId !== this.loadRequestId) {
+        return;
+      }
+
       if (cache) {
         this.weather = cache.weather;
         this.forecast = cache.forecast;
@@ -186,7 +200,10 @@ export class HomePage {
         this.errorMessage = 'Could not load weather right now.';
       }
     } finally {
-      this.isLoading = false;
+      // Only the latest load should turn off the loading state.
+      if (requestId === this.loadRequestId) {
+        this.isLoading = false;
+      }
     }
   }
 
