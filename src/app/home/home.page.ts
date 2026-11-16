@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import {
+  ActionSheetController,
   IonButton,
   IonButtons,
   IonContent,
@@ -12,7 +13,9 @@ import {
 } from '@ionic/angular';
 
 import type { ForecastDay, Weather, WeatherCondition } from '../models/weather.model';
+import type { Place } from '../models/place.model';
 import { LocationService } from '../services/location.service';
+import { PlacesService } from '../services/places.service';
 import { VibrationService } from '../services/vibration.service';
 import { WeatherService } from '../services/weather.service';
 
@@ -35,7 +38,9 @@ import { WeatherService } from '../services/weather.service';
 export class HomePage implements OnInit {
   private readonly weatherService = inject(WeatherService);
   private readonly locationService = inject(LocationService);
+  private readonly placesService = inject(PlacesService);
   private readonly vibrationService = inject(VibrationService);
+  private readonly actionSheetController = inject(ActionSheetController);
 
   weather: Weather | null = null;
   forecast: ForecastDay[] = [];
@@ -47,7 +52,13 @@ export class HomePage implements OnInit {
   offlineMessage = '';
   showOfflineBanner = false;
 
+  // null means "My Location" (GPS). A saved place means show weather for that place.
+  selectedPlace: Place | null = null;
+  selectedLocationLabel = 'My Location';
+
   async ngOnInit(): Promise<void> {
+    // Load saved places so the picker can show them.
+    await this.placesService.loadPlaces();
     await this.loadWeather();
   }
 
@@ -62,6 +73,41 @@ export class HomePage implements OnInit {
     await this.vibrationService.lightTap();
     await this.loadWeather(true);
     event.target.complete();
+  }
+
+  // Open a picker to choose My Location or a saved place.
+  async chooseLocation(): Promise<void> {
+    const savedPlaces = this.placesService.getPlaces();
+
+    const buttons = [
+      {
+        text: 'My Location',
+        handler: async () => {
+          this.selectedPlace = null;
+          this.selectedLocationLabel = 'My Location';
+          await this.loadWeather();
+        },
+      },
+      ...savedPlaces.map((place) => ({
+        text: place.name,
+        handler: async () => {
+          this.selectedPlace = place;
+          this.selectedLocationLabel = place.name;
+          await this.loadWeather();
+        },
+      })),
+      {
+        text: 'Cancel',
+        role: 'cancel' as const,
+      },
+    ];
+
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Choose location',
+      buttons,
+    });
+
+    await actionSheet.present();
   }
 
   async loadWeather(isRefresh = false): Promise<void> {
@@ -80,19 +126,28 @@ export class HomePage implements OnInit {
     this.showOfflineBanner = false;
 
     try {
-      // Get the device location first. If denied or unavailable, use Gapan.
-      const location = await this.locationService.getCurrentLocation();
-      const placeName = location.usedFallback ? 'Gapan, Nueva Ecija' : 'My Location';
+      let latitude: number;
+      let longitude: number;
+      let placeName: string;
 
-      if (location.usedFallback) {
-        this.fallbackMessage = 'Location not available. Showing weather for Gapan.';
+      if (this.selectedPlace) {
+        // Show weather for the selected saved place.
+        latitude = this.selectedPlace.latitude;
+        longitude = this.selectedPlace.longitude;
+        placeName = this.selectedPlace.name;
+      } else {
+        // Get the device location first. If denied or unavailable, use Gapan.
+        const location = await this.locationService.getCurrentLocation();
+        latitude = location.latitude;
+        longitude = location.longitude;
+        placeName = location.usedFallback ? 'Gapan, Nueva Ecija' : 'My Location';
+
+        if (location.usedFallback) {
+          this.fallbackMessage = 'Location not available. Showing weather for Gapan.';
+        }
       }
 
-      const result = await this.weatherService.getWeather(
-        location.latitude,
-        location.longitude,
-        placeName,
-      );
+      const result = await this.weatherService.getWeather(latitude, longitude, placeName);
 
       this.weather = result.weather;
       this.forecast = result.forecast;

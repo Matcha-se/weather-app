@@ -4,6 +4,7 @@ import { addIcons } from 'ionicons';
 import {
   addOutline,
   chevronBackOutline,
+  chevronDownOutline,
   cloudyOutline,
   createOutline,
   locationOutline,
@@ -25,6 +26,7 @@ export class AppComponent {
     addIcons({
       addOutline,
       chevronBackOutline,
+      chevronDownOutline,
       cloudyOutline,
       createOutline,
       locationOutline,

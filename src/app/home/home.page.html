@@ -1,9 +1,10 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <div class="location">
+    <button type="button" class="location location-button" (click)="chooseLocation()" aria-label="Choose location">
       <ion-icon aria-hidden="true" name="location-outline"></ion-icon>
-      <span>{{ weather?.placeName || 'Weather' }}</span>
-    </div>
+      <span>{{ selectedLocationLabel }}</span>
+      <ion-icon aria-hidden="true" name="chevron-down-outline" class="chevron"></ion-icon>
+    </button>
 
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="refreshWeather()" aria-label="Refresh weather">
