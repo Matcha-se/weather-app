@@ -12,8 +12,8 @@ import {
   IonToolbar,
 } from '@ionic/angular';
 
-import type { ForecastDay, Weather, WeatherCondition } from '../models/weather.model';
 import type { Place } from '../models/place.model';
+import type { ForecastDay, Weather, WeatherCondition } from '../models/weather.model';
 import { LocationService } from '../services/location.service';
 import { PlacesService } from '../services/places.service';
 import { VibrationService } from '../services/vibration.service';
@@ -191,8 +191,7 @@ export class HomePage {
         this.weather = cache.weather;
         this.forecast = cache.forecast;
         this.setUpdatedLabel(cache.updatedAt);
-        this.offlineMessage =
-          'Offline: showing last saved weather from ' + this.formatCacheDate(cache.updatedAt);
+        this.offlineMessage = 'Offline: showing last saved weather from ' + this.formatCacheDate(cache.updatedAt);
         this.showOfflineBanner = true;
       } else {
         this.weather = null;

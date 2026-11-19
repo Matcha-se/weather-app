@@ -54,6 +54,11 @@ export class PlacesPage {
   // The service signal updates this page automatically.
   readonly places: Signal<Place[]> = this.placesService.places;
 
+  // Shows when the REST API was unreachable and cached places are being used.
+  get offlineMode(): boolean {
+    return this.placesService.offlineMode;
+  }
+
   // Refresh the list every time the page is shown.
   async ionViewWillEnter(): Promise<void> {
     await this.placesService.loadPlaces();
@@ -93,7 +98,7 @@ export class PlacesPage {
 
   // Delete the place and show a success message.
   private async deletePlace(place: Place): Promise<void> {
-    this.placesService.deletePlace(place.id);
+    await this.placesService.deletePlace(place.id);
     await this.vibrationService.success();
     await this.showToast('Place deleted.');
   }

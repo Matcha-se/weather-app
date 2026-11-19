@@ -18,6 +18,15 @@ ion-content {
   --background: var(--app-bg);
 }
 
+.offline-note {
+  margin: 0 4px 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--app-text);
+  font-size: 12px;
+}
+
 .intro {
   margin: 0 4px 14px;
   color: var(--app-muted);

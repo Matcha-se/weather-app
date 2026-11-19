@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom, timeout } from 'rxjs';
 
 import type { ForecastDay, Weather, WeatherCondition } from '../models/weather.model';
+
 import { StorageService } from './storage.service';
 
 // This is what we save for offline use.
@@ -116,11 +117,7 @@ export class WeatherService {
       return 'cloudy';
     }
 
-    if (
-      (code >= 51 && code <= 67) ||
-      (code >= 80 && code <= 82) ||
-      (code >= 95 && code <= 99)
-    ) {
+    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82) || (code >= 95 && code <= 99)) {
       return 'rainy';
     }
 

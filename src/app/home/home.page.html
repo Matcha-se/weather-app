@@ -25,26 +25,18 @@
     <ion-spinner name="crescent"></ion-spinner>
     <p>Loading weather...</p>
   </div>
-  }
-
-  @if (errorMessage && !isLoading) {
+  } @if (errorMessage && !isLoading) {
   <div class="state-box app-card">
     <p class="error-text">{{ errorMessage }}</p>
     <ion-button class="app-button" (click)="refreshWeather()">Try Again</ion-button>
   </div>
-  }
-
-  @if (fallbackMessage && !isLoading) {
+  } @if (fallbackMessage && !isLoading) {
   <p class="info-message">{{ fallbackMessage }}</p>
-  }
-
-  @if (showOfflineBanner && !isLoading) {
+  } @if (showOfflineBanner && !isLoading) {
   <div class="offline-banner">
     <p>{{ offlineMessage }}</p>
   </div>
-  }
-
-  @if (weather && !isLoading && !errorMessage) {
+  } @if (weather && !isLoading && !errorMessage) {
   <!-- Current weather card -->
   <div class="current-card app-card">
     <img class="current-icon" [src]="iconFor(weather.condition)" [alt]="weather.conditionLabel" />

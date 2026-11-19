@@ -1,4 +1,5 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import type { OnDestroy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -49,6 +50,9 @@ export class AddPlacePage implements OnDestroy {
   private readonly vibrationService = inject(VibrationService);
   private readonly toastController = inject(ToastController);
 
+  // Resolves once the place being edited (if any) has been loaded from the API.
+  private readonly ready: Promise<void>;
+
   placeId: string | null = null;
   isEditing = false;
   isSaving = false;
@@ -66,13 +70,22 @@ export class AddPlacePage implements OnDestroy {
   });
 
   constructor() {
-    // If the URL has an id (add-place/:id), we are editing an existing place.
+    this.ready = this.loadPlaceForEdit();
+  }
+
+  // If the URL has an id (add-place/:id), load that place before showing the form.
+  private async loadPlaceForEdit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       return;
     }
 
-    const place = this.placesService.getPlace(id);
+    let place = this.placesService.getPlace(id);
+    if (!place) {
+      // A direct page load may happen before the first API request finishes.
+      await this.placesService.loadPlaces();
+      place = this.placesService.getPlace(id);
+    }
     if (!place) {
       return;
     }
@@ -89,6 +102,8 @@ export class AddPlacePage implements OnDestroy {
 
   // Set up the picker map when the page is shown.
   async ionViewDidEnter(): Promise<void> {
+    await this.ready;
+
     const lat = Number(this.placeForm.controls.latitude.value);
     const lng = Number(this.placeForm.controls.longitude.value);
     const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && this.placeForm.controls.latitude.value !== '';
@@ -160,7 +175,7 @@ export class AddPlacePage implements OnDestroy {
 
     try {
       if (this.isEditing && this.placeId) {
-        this.placesService.updatePlace({
+        await this.placesService.updatePlace({
           id: this.placeId,
           name,
           note,
@@ -168,7 +183,7 @@ export class AddPlacePage implements OnDestroy {
           longitude,
         });
       } else {
-        this.placesService.addPlace({
+        await this.placesService.addPlace({
           name,
           note,
           latitude,

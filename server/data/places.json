@@ -1,0 +1,16 @@
+[
+  {
+    "id": "gapan",
+    "name": "Gapan, Nueva Ecija",
+    "note": "My hometown",
+    "latitude": 15.3071,
+    "longitude": 120.9467
+  },
+  {
+    "id": "cabanatuan",
+    "name": "Cabanatuan City, Nueva Ecija",
+    "note": "Nearby city",
+    "latitude": 15.4865,
+    "longitude": 120.9734
+  }
+]

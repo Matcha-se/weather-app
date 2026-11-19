@@ -17,6 +17,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  @if (offlineMode) {
+  <p class="offline-note">Offline: showing cached places. Start the API to save to the server.</p>
+  }
+
   <p class="intro">Swipe left to delete, tap the pencil to edit, or tap + to add a new place.</p>
 
   @if (places().length > 0) {
@@ -34,21 +38,13 @@
             <ion-icon slot="icon-only" name="create-outline"></ion-icon>
           </ion-button>
 
-          <ion-button
-            fill="clear"
-            color="danger"
-            slot="end"
-            (click)="confirmDelete(place)"
-            aria-label="Delete place"
-          >
+          <ion-button fill="clear" color="danger" slot="end" (click)="confirmDelete(place)" aria-label="Delete place">
             <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
           </ion-button>
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="danger" (click)="confirmDelete(place, slidingItem)">
-            Delete
-          </ion-item-option>
+          <ion-item-option color="danger" (click)="confirmDelete(place, slidingItem)"> Delete </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
       }

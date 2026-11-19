@@ -1,0 +1,9 @@
+{
+  "name": "weather-app-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "REST API for saved places. Uses only Node built-in modules; no install needed.",
+  "scripts": {
+    "start": "node index.js"
+  }
+}

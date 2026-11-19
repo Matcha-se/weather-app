@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  // Used when running `ionic serve` on the same machine as the API.
+  apiBaseUrl: 'http://localhost:3000/api',
 };
 
 /*

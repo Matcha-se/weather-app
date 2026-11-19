@@ -73,6 +73,9 @@ Thumbs.db
 .env
 .env.*
 
+# Local notes (kept on this machine only, not part of the repository)
+BUILD.md
+SUMMARY.md
 
 # Playwright
 /test-results/
