@@ -100,6 +100,8 @@ async function handleRequest(req, res) {
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
 
+  console.log(`${new Date().toISOString()} ${req.method} ${pathname}`);
+
   // Browsers and the Capacitor WebView send this before cross-origin requests.
   if (req.method === 'OPTIONS') {
     send(res, 204);

@@ -78,15 +78,13 @@ export class HomePage {
     await this.loadWeather();
   }
 
-  // Refresh button tap.
+  // Refresh button tap. Clicks are vibrated by the global click handler.
   async refreshWeather(): Promise<void> {
-    await this.vibrationService.lightTap();
     await this.loadWeather();
   }
 
   // Pull-to-refresh action.
   async handleRefresh(event: any): Promise<void> {
-    await this.vibrationService.lightTap();
     await this.loadWeather(true);
     event.target.complete();
   }

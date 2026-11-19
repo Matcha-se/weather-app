@@ -55,8 +55,6 @@ export class MapPage implements OnDestroy {
 
   // Center the map on my current location.
   async locateMe(): Promise<void> {
-    await this.vibrationService.lightTap();
-
     const location = await this.locationService.getCurrentLocation();
     this.myLatitude = location.latitude;
     this.myLongitude = location.longitude;

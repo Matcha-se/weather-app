@@ -129,8 +129,6 @@ export class AddPlacePage implements OnDestroy {
 
   // Fill latitude and longitude using the device's real GPS location.
   async useCurrentLocation(): Promise<void> {
-    await this.vibrationService.lightTap();
-
     try {
       const location = await this.locationService.getCurrentLocation();
       this.updateSelectedLocation(location.latitude, location.longitude, 15);

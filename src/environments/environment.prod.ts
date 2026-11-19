@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  // IMPORTANT: replace 192.168.1.100 with your laptop's Wi-Fi/LAN IP address,
-  // then rebuild the APK. The phone cannot reach "localhost" - that is itself.
-  apiBaseUrl: 'http://192.168.1.100:3000/api',
+  // Laptop's Wi-Fi IP. The phone cannot use "localhost" - that is itself.
+  // If your laptop's IP changes, update this and rebuild the APK.
+  apiBaseUrl: 'http://192.168.100.17:3000/api',
 };
